@@ -1,7 +1,13 @@
 const { Sequelize } = require('sequelize');
 const logger = require('../logger.js');
+const config = require('../config.js');
 
-const sequelize = new Sequelize('postgres://postgres:postgres@db:5432/postgres', { logging: (msg) => logger.log({ level: 'verbose', message: msg, group: 'db' }) });
+const postgresConnectionUrl = `postgres://${config.postgres.user}:${config.postgres.password}@${config.postgres.host}:5432/${config.postgres.db}`;
+logger.log({ level: 'info', message: `Attempting to connect to Postgres with url: ${postgresConnectionUrl}`, group: 'db' })
+const sequelize = new Sequelize(postgresConnectionUrl, {
+  logging: (msg) => logger.log({ level: 'verbose', message: msg, group: 'db' }),
+  dialect: 'postgres'
+});
 
 const modelDefiners = [
 	require('./models/user.model.js'),

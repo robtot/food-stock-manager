@@ -19,5 +19,11 @@ if (process.env.FOOD_STOCK_MANAGER_USERS) {
 }
 
 module.exports = {
-  users
+  users,
+  postgres: {
+    db: process.env.POSTGRES_DB || 'postgres',
+    user: process.env.POSTGRES_USER || 'postgres',
+    password: process.env.POSTGRES_PASSWORD || 'postgres',
+    host: process.env.POSTGRES_HOST || 'localhost',
+  } 
 }

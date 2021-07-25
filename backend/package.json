@@ -5,11 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/index.js",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "debug": "node --inspect=0.0.0.0 src/index.js"
   },
   "author": "Robert Rytovuori",
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "joi": "^17.4.1",
     "pg": "^8.6.0",
