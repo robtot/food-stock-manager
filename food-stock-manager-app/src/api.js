@@ -1,10 +1,11 @@
 import logger from './logger.js';
+import config from './config.js';
 
 /**
  * Checks if username and password are valid
  */
 export function authenticate(username, password) {
-  const url = `http://localhost:3000/authorized?id=${username}&password=${password}`;
+  const url = `${config.BACKEND_URL}/authorized?id=${username}&password=${password}`;
   logger.log({ level: 'http', message: `GET ${url}`, group: 'API' });
   return fetch(url).then(response => {
       if (response.ok) {
@@ -21,7 +22,7 @@ export function authenticate(username, password) {
  * Gets all ingredient names
  */
 export function getIngredients(username, password) {
-  const url = `http://localhost:3000/ingredients?id=${username}&password=${password}`;
+  const url = `${config.BACKEND_URL}/ingredients?id=${username}&password=${password}`;
   logger.log({ level: 'http', message: `GET ${url}`, group: 'API' });
   return fetch(url).then(response => {
       if (response.ok) {
@@ -38,7 +39,7 @@ export function getIngredients(username, password) {
  * Gets all recipes
  */
 export function getRecipes(username, password) {
-  const url = `http://localhost:3000/recipes?id=${username}&password=${password}`;
+  const url = `${config.BACKEND_URL}/recipes?id=${username}&password=${password}`;
   logger.log({ level: 'http', message: `GET ${url}`, group: 'API' });
   return fetch(url).then(response => {
       if (response.ok) {
@@ -55,7 +56,7 @@ export function getRecipes(username, password) {
  * Gets all ingredients with amount in stock
  */
  export function getStock(username, password) {
-  const url = `http://localhost:3000/stock?id=${username}&password=${password}`;
+  const url = `${config.BACKEND_URL}/stock?id=${username}&password=${password}`;
   logger.log({ level: 'http', message: `GET ${url}`, group: 'API' });
   return fetch(url).then(response => {
       if (response.ok) {
@@ -72,7 +73,7 @@ export function getRecipes(username, password) {
  * Adds given amount of ingredient to stock
  */
  export function addStockIngredient(username, password, ingredient, amount) {
-  const url = `http://localhost:3000/stock?id=${username}&password=${password}`;
+  const url = `${config.BACKEND_URL}/stock?id=${username}&password=${password}`;
   logger.log({ level: 'http', message: `PUT ${url}`, group: 'API' });
   return fetch(url, {
     method: 'PUT',
@@ -93,7 +94,7 @@ export function getRecipes(username, password) {
  * Subtracts amount of ingredients from stock required for recipe
  */
  export function subtractRecipeIngredientsFromStock(username, password, recipeName) {
-  const url = `http://localhost:3000/recipe?id=${username}&password=${password}&recipe=${recipeName}`;
+  const url = `${config.BACKEND_URL}/recipe?id=${username}&password=${password}&recipe=${recipeName}`;
   logger.log({ level: 'http', message: `PATCH ${url}`, group: 'API' });
   return fetch(url, {
     method: 'PATCH',
