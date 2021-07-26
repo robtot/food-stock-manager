@@ -9,7 +9,7 @@ export function authenticate(username, password) {
   logger.log({ level: 'http', message: `GET ${url}`, group: 'API' });
   return fetch(url).then(response => {
       if (response.ok) {
-          return Promise.resolve(response);
+          return Promise.resolve(true);
       } else {
           const error = new Error(response.statusText);
           error.response = response;
@@ -100,7 +100,7 @@ export function getRecipes(username, password) {
     method: 'PATCH',
   }).then(response => {
       if (response.ok) {
-          return Promise.resolve(response);
+          return Promise.resolve(true);
       } else {
           const error = new Error(response.statusText);
           error.response = response;

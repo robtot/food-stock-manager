@@ -18,11 +18,18 @@ import {
   useRecipe as recipeUseAction
 } from './stockActions.js';
 
+// validates string as parseable integer
 function isNormalInteger(str) {
   return /^\+?(0|[1-9]\d*)$/.test(str);
 }
 
-function hasIngredients(recipeIngredients, stock) {
+/**
+ * Checks if there is enough ingredients for recipe in stock
+ * @param {Array} recipeIngredients
+ * @param {Array} stock 
+ * @returns {Boolean}
+ */
+export function hasIngredients(recipeIngredients, stock) {
   for (const ingredient of recipeIngredients) {
     const foundInStock = stock.findIndex(stockItem => stockItem.name === ingredient.name);
     if (foundInStock === -1) return false;
@@ -31,20 +38,30 @@ function hasIngredients(recipeIngredients, stock) {
   return true;
 }
 
+/**
+ * React Stock page component
+ */
 export function Stock() {
-  const stock = useSelector((state) => state.stock);
   const dispatch = useDispatch();
 
+  const stock = useSelector((state) => state.stock); // stock Redux state
+
+  // Add to stock functionality state
   const [newItemDropdownOpen, setNewItemDropdownOpen] = useState(false);
   const toggleNewItemDropDown = () => setNewItemDropdownOpen(prevState => !prevState);
-
   const [newItemAmount, setNewItemAmount] = useState(1);
   const [newItemName, setNewItemName] = useState(null);
 
+  // Fetch initial data on component mount
   useEffect(() => {
     dispatch(fetchInitialData());
   }, []);
 
+  if (stock.isError) {
+    return(<div>Sorry, something went wrong when communicating with backend. You may try refreshing page</div>);
+  }
+
+  // render
   return (
     <div>
       <Alert color={newItemName ? 'success' : 'secondary'} className={newItemName ? "m-3 pb-0 text-center" : "m-3 text-center"}>
