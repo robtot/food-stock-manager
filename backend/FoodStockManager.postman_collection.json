@@ -1,0 +1,727 @@
+{
+	"info": {
+		"_postman_id": "d7e6365f-a928-41b0-b4ec-49ff3ac43efe",
+		"name": "FoodStockManager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ingredients",
+			"item": [
+				{
+					"name": "GET ingredients",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body response correct\", function () {\r",
+									"    var schema = {\r",
+									"        \"type\": \"array\",\r",
+									"        \"items\": {\r",
+									"            \"properties\": {\r",
+									"                \"name\": {\r",
+									"                    \"type\": \"string\"\r",
+									"                }\r",
+									"            },\r",
+									"            \"required\": [\"name\"]\r",
+									"        }\r",
+									"    };\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/ingredients?id={{username}}&password={{password}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"ingredients"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ingredients with wrong credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/ingredients?id={{username}}&password=thisiswrongpassword",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"ingredients"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "thisiswrongpassword"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ingredients with wrong username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/ingredients?id=thisiswrongusername&password={{password}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"ingredients"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "thisiswrongusername"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ingredients with missing user data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/ingredients",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"ingredients"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipes",
+			"item": [
+				{
+					"name": "GET recipes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body response correct\", function () {\r",
+									"    var schema = {\r",
+									"        \"type\": \"array\",\r",
+									"        \"items\": {\r",
+									"            \"properties\": {\r",
+									"                \"name\": {\r",
+									"                    \"type\": \"string\"\r",
+									"                },\r",
+									"                \"ingredients\": {\r",
+									"                    \"type\": \"array\"\r",
+									"                }\r",
+									"            },\r",
+									"            \"required\": [\"name\", \"ingredients\"]\r",
+									"        }\r",
+									"    };\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/recipes?id={{username}}&password={{password}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"recipes"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Stock",
+			"item": [
+				{
+					"name": "GET stock",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body response correct\", function () {\r",
+									"    var schema = {\r",
+									"        \"type\": \"array\",\r",
+									"        \"items\": {\r",
+									"            \"properties\": {\r",
+									"                \"name\": {\r",
+									"                    \"type\": \"string\"\r",
+									"                },\r",
+									"                \"amount\": {\r",
+									"                    \"type\": \"number\"\r",
+									"                }\r",
+									"            },\r",
+									"            \"required\": [\"name\", \"amount\"]\r",
+									"        }\r",
+									"    };\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/stock?id={{username}}&password={{password}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"stock"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT stock",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body response correct\", function () {\r",
+									"    var schema = {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"name\": {\r",
+									"                \"type\": \"string\"\r",
+									"            },\r",
+									"            \"amount\": {\r",
+									"                \"type\": \"number\"\r",
+									"            }\r",
+									"        },\r",
+									"        \"required\": [\"name\", \"amount\"]\r",
+									"    };\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"tomato\",\r\n    \"amount\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/stock?id={{username}}&password={{password}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"stock"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT stock wrong body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"xnsdm\": \"tomato\",\r\n    \"amount\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/stock?id={{username}}&password={{password}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"stock"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT stock with nonexistent item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"this cannot possibly exist no way\",\r\n    \"amount\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/stock?id={{username}}&password={{password}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"stock"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH use recipe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"Making sure there are enough ingredients in stock for Salad recipe\");\r",
+									"const hostname = pm.collectionVariables.get(\"hostname\");\r",
+									"const username = pm.collectionVariables.get(\"username\");\r",
+									"const password = pm.collectionVariables.get(\"password\");\r",
+									"pm.sendRequest({\r",
+									"    url: `${hostname}/stock?id=${username}&password=${password}`,\r",
+									"    method: \"PUT\",\r",
+									"    header: {\r",
+									"        \"content-type\": \"application/json\",\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({ name: \"tomato\", amount: 5 })\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    console.log(response.json());\r",
+									"});\r",
+									"pm.sendRequest({\r",
+									"    url: `${hostname}/stock?id=${username}&password=${password}`,\r",
+									"    method: \"PUT\",\r",
+									"    header: {\r",
+									"        \"content-type\": \"application/json\",\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({ name: \"cabbage\", amount: 5 })\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    console.log(response.json());\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/recipe?id={{username}}&password={{password}}&recipe=Salad",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"recipe"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								},
+								{
+									"key": "recipe",
+									"value": "Salad"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authorized",
+			"item": [
+				{
+					"name": "GET authorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/authorized?id={{username}}&password={{password}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"authorized"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET authorized wrong user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/authorized?id=wrongUser&password={{password}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"authorized"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "wrongUser"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET authorized wrong password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/authorized?id={{username}}&password=wrongPassword",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"authorized"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "wrongPassword"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "hostname",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "username",
+			"value": "test"
+		},
+		{
+			"key": "password",
+			"value": "test"
+		}
+	]
+}
