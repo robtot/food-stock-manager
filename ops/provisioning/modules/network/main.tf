@@ -12,7 +12,28 @@ resource "aws_subnet" "public" {
   vpc_id = "${aws_vpc.main.id}"
   cidr_block = "${var.subnet1_cidr_block_range}"
   map_public_ip_on_launch = "true"
-  availability_zone = "${var.availability_zone}"
+  availability_zone = "${var.availability_zone_1}"
+}
+
+resource "aws_subnet" "private" {
+  vpc_id = "${aws_vpc.main.id}"
+  cidr_block = "${var.subnet2_cidr_block_range}"
+  availability_zone = "${var.availability_zone_1}"
+}
+
+resource "aws_subnet" "db" {
+  vpc_id = "${aws_vpc.main.id}"
+  cidr_block = "${var.subnet3_cidr_block_range}"
+  availability_zone = "${var.availability_zone_2}"
+}
+
+resource "aws_db_subnet_group" "db" {
+  name = "food-stock-manager"
+  subnet_ids = [aws_subnet.private.id, aws_subnet.db.id]
+
+  tags = {
+    Name = "Food Stock Manager"
+  }
 }
 
 resource "aws_route_table" "public" {

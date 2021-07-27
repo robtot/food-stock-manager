@@ -28,6 +28,13 @@ module "securityGroupModule" {
   source = "./modules/securityGroup"
   region = var.region
   vpc_id = module.networkModule.vpc_id
+  vpc_cidr_block = module.networkModule.vpc_cidr_block
+}
+
+module "dbModule" {
+  source = "./modules/db"
+  sg_internal_5432 = module.securityGroupModule.sg_internal_5432
+  db_subnet_group_name = module.networkModule.db_subnet_group_name
 }
 
 module "instanceModule" {
