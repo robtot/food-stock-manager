@@ -10,7 +10,7 @@ DB can be configured in API with following environment variables:
 - POSTGRES_PASSWORD
 - POSTGRES_HOST
 
-The backend creates users on startup. By default it creates user with username "test" and password "test". You can change users to create with FOOD_STOCK_MANAGER_USERS env variable (by default it is set to "[{ id: 'test', password: 'test' }]")
+The backend creates users on startup. By default it creates user with username "test" and password "test". You can change users to create with FOOD_STOCK_MANAGER_USERS env variable (by default it is set to '[{"id":"test","password":"test"}]')
 
 ## API tests
 

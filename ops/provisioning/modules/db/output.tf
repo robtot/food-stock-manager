@@ -12,3 +12,8 @@ output "rds_username" {
   description = "RDS instance root username"
   value = aws_db_instance.main.username
 }
+
+output "rds_db_name" {
+  description = "RDS instance db name"
+  value = aws_db_instance.main.name
+}

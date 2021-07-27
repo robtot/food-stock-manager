@@ -10,3 +10,6 @@
 
 # Generated ansible inventory file
 inventory
+
+.ssh/*
+!.ssh/README.md

@@ -14,3 +14,7 @@ variable "db_user" {
 variable "db_password" {
   description = "Password for user in db to create"
 }
+
+variable "db_name" {
+  description = "DB name to create"
+}

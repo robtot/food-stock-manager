@@ -4,7 +4,12 @@
   vars:
     NODEJS_VERSION: "10"
     ansible_distribution_release: "focal"
+  vars_files:
+    - secrets.yml
   tasks:
+    - name: install unzip
+      apt:
+        name: unzip
     - name: Install the gpg key for nodejs LTS
       apt_key:
         url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
@@ -18,3 +23,111 @@
       apt:
         name: nodejs
         state: present
+    - name: Install pm2
+      npm: name=pm2 global=yes production=yes
+      tags:
+        - pm2
+    - name: Install Nginx
+      apt:
+        name: nginx
+        update_cache: yes
+    - name: Ensure local temporary backend zip is removed
+      delegate_to: 127.0.0.1
+      become: no
+      file:
+        path: ./tmp/food-stock-manager-backend.zip
+        state: absent
+    - name: Ensure local temporary app zip is removed
+      delegate_to: 127.0.0.1
+      become: no
+      file:
+        path: ./tmp/food-stock-manager-app.zip
+        state: absent
+    - name: copy nginx config file
+      copy: src=files/nginx.conf dest=/etc/nginx/sites-available/default
+    - name: Compress Food Stock Manager App source code
+      delegate_to: 127.0.0.1
+      become: no
+      community.general.archive:
+        path:
+          - ../../../food-stock-manager-app/src
+          - ../../../food-stock-manager-app/public
+          - ../../../food-stock-manager-app/package.json
+          - ../../../food-stock-manager-app/package-lock.json
+        dest: ./tmp/food-stock-manager-app.zip
+        format: zip
+      tags:
+        - archive
+    - name: ensure tmp app directory exists
+      file:
+        path: /tmp/food-stock-manager-app
+        state: directory
+    - name: Extract Food Stock Manager App zip to server
+      unarchive: src=./tmp/food-stock-manager-app.zip dest=/tmp/food-stock-manager-app
+    - name: Install npm packages for app
+      community.general.npm:
+        path: /tmp/food-stock-manager-app
+        production: yes
+    - name: Build app production bundle
+      command: npm run build
+      args:
+        chdir: /tmp/food-stock-manager-app
+    - name: Remove existing app production bundle
+      shell: rm -rf /usr/share/nginx/html/*
+    - name: Copy app production bundle to nginx
+      copy:
+        src: /tmp/food-stock-manager-app/build/
+        dest: /usr/share/nginx/html
+        remote_src: yes
+    - name: Clean tmp app source code
+      file:
+        path: /tmp/food-stock-manager-app/
+        state: absent
+    - name: Compress Food Stock Manager Backend source code
+      delegate_to: 127.0.0.1
+      become: no
+      community.general.archive:
+        path:
+          - ../../../backend/src
+          - ../../../backend/package.json
+          - ../../../backend/package-lock.json
+        dest: ./tmp/food-stock-manager-backend.zip
+        format: zip
+      tags:
+        - archive
+    - name: Stop backend if running
+      command: pm2 stop food-stock-manager chdir=/usr/share/food-stock-manager-backend
+      ignore_errors: yes
+      tags:
+        - pm2
+    - name: Clean existing backend
+      file:
+        path: /usr/share/food-stock-manager-backend/
+        state: absent
+    - name: ensure backend directory exists
+      file:
+        path: /usr/share/food-stock-manager-backend
+        state: directory
+    - name: Extract Food Stock Manager Backend zip to server
+      unarchive: src=./tmp/food-stock-manager-backend.zip dest=/usr/share/food-stock-manager-backend
+    - name: Install npm packages for backend
+      community.general.npm:
+        path: /usr/share/food-stock-manager-backend
+        production: yes
+    - name: Start backend
+      command: pm2 start src/index.js --name food-stock-manager chdir=/usr/share/food-stock-manager-backend
+      environment:
+        - FOOD_STOCK_MANAGER_USERS: "{{ init_users | to_json }}"
+        - POSTGRES_DB: "{{ db_name }}"
+        - POSTGRES_USER: "{{ db_user }}"
+        - POSTGRES_HOST: "{{ db_host }}"
+        - POSTGRES_PASSWORD: "{{ db_pass }}"
+      tags:
+        - pm2
+    - name: enable nginx config
+      file: >
+        dest=/etc/nginx/sites-enabled/default
+        src=/etc/nginx/sites-available/default
+        state=link
+    - name: restart nginx
+      service: name=nginx state=restarted

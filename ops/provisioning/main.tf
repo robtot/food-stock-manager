@@ -36,6 +36,7 @@ module "dbModule" {
   sg_internal_5432 = module.securityGroupModule.sg_internal_5432
   db_subnet_group_name = module.networkModule.db_subnet_group_name
   db_password = var.db_password
+  db_name = "FoodStockManager"
 }
 
 module "instanceModule" {
@@ -52,7 +53,9 @@ module "instanceModule" {
 resource "local_file" "AnsibleInventory" {
   content = templatefile("hosts.ini.tmpl", {
     host = module.instanceModule.public_ip
-    db_host = module.dbModule.rds_hostname
+    db_host = module.dbModule.rds_hostname,
+    db_user = module.dbModule.rds_username,
+    db_name = module.dbModule.rds_db_name
   })
   filename = "hosts.ini"
 }

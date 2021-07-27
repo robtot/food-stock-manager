@@ -1,0 +1,5 @@
+- hosts: localhost
+  vars_files:
+    - secrets.yml
+  tasks:
+    - debug: msg={{ init_users | to_json }}

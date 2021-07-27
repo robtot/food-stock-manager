@@ -21,6 +21,7 @@ async function assertDatabaseConnectionOk() {
 		// add users from config
 		const users = config.users;
 		for (const user of users) {
+			logger.log({ level: 'info', message: `Upserting user ${user.id} to DB`,  group: 'init' });
 			await models.User.upsert(user);
 		}
 		logger.log({ level: 'info', message: `Users upserted to DB`,  group: 'init' });

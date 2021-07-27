@@ -9,7 +9,7 @@ const usersSchema = joi.array().items(joi.object({
 let users = [{ id: 'test', password: 'test' }]; // default users
 if (process.env.FOOD_STOCK_MANAGER_USERS) {
   try {
-    const parsedUsersEnv = JSON.parse(process.env.FOOD_STOCK_MANAGER_USERS);
+    const parsedUsersEnv = JSON.parse(process.env.FOOD_STOCK_MANAGER_USERS.replace(/'/g, '"'));
     const { error } = usersSchema.validate(parsedUsersEnv);
     if (error) throw new Error(error);
     users = parsedUsersEnv;

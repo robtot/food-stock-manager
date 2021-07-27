@@ -1,3 +1,3 @@
 export default {
-  BACKEND_URL: 'http://localhost:3000'
+  BACKEND_URL: process.env.NODE_ENV ? '' : 'http://localhost:3000'
 };

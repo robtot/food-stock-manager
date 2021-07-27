@@ -1,0 +1,3 @@
+tmp/*
+!tmp/README.md
+secrets.yml
