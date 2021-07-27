@@ -50,9 +50,9 @@ module "instanceModule" {
 
 // generate ansible inventory file
 resource "local_file" "AnsibleInventory" {
-  content = templatefile("inventory.tmpl", {
+  content = templatefile("hosts.ini.tmpl", {
     host = module.instanceModule.public_ip
     db_host = module.dbModule.rds_hostname
   })
-  filename = "inventory"
+  filename = "hosts.ini"
 }
