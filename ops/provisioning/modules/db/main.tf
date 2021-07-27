@@ -14,8 +14,8 @@ resource "aws_db_instance" "main" {
   engine_version = "13.3"
   instance_class = "db.t3.micro"
   name = "FoodStockManager"
-  username = "postgres"
-  password = "Y3QUwe8VKH"
+  username = var.db_user
+  password = var.db_password
   skip_final_snapshot = true
   vpc_security_group_ids = [var.sg_internal_5432]
   db_subnet_group_name = var.db_subnet_group_name

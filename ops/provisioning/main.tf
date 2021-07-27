@@ -35,6 +35,7 @@ module "dbModule" {
   source = "./modules/db"
   sg_internal_5432 = module.securityGroupModule.sg_internal_5432
   db_subnet_group_name = module.networkModule.db_subnet_group_name
+  db_password = var.db_password
 }
 
 module "instanceModule" {
