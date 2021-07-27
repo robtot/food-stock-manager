@@ -7,3 +7,6 @@
 
 # Make exception for terraform state file for terraform backend
 !/terraform-backend/terraform.tfstate
+
+# Generated ansible inventory file
+inventory

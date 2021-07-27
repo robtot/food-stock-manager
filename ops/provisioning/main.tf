@@ -47,3 +47,12 @@ module "instanceModule" {
   security_group_ids = [module.securityGroupModule.sg_22, module.securityGroupModule.sg_80]
   instance_ami = data.aws_ami.ubuntu.id
 }
+
+// generate ansible inventory file
+resource "local_file" "AnsibleInventory" {
+  content = templatefile("inventory.tmpl", {
+    host = module.instanceModule.public_ip
+    db_host = module.dbModule.rds_hostname
+  })
+  filename = "inventory"
+}

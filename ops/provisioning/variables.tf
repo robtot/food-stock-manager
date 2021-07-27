@@ -4,4 +4,5 @@ variable "region" {
 
 variable "db_password" {
   description = "Password for db user"
+  sensitive = true
 }
